@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Engineering Month 1 Exam | ប្រឡងវិស្វកម្ម AI ខែទី ១ (200+ Question Bank)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', 'Kantumruy Pro', sans-serif;
+      background-color: #f8fafc;
+    }
+    .khmer-text {
+      font-family: 'Kantumruy Pro', sans-serif;
+      line-height: 1.8;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Top Sticky Header -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-lg shadow">
+          AI
+        </div>
+        <div>
+          <h1 class="font-bold text-base sm:text-lg text-slate-900">
+            AI Engineering Month 1 Exam
+            <span class="text-indigo-600 font-normal text-sm ml-1 khmer-text">| វិញ្ញាសាប្រឡងវិស្វកម្ម AI ខែទី ១</span>
+          </h1>
+          <p class="text-xs text-slate-500">
+            <span id="poolCountBadge" class="font-semibold text-indigo-600">208</span> Total Questions in Bank • Draws 50 Random Questions per Test
+          </p>
+        </div>
+      </div>
+
+      <!-- Controls: Language, Timer, New Exam -->
+      <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+        <!-- Language Switcher -->
+        <div class="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs font-medium">
+          <button onclick="setLanguage('both')" id="lang-both" class="px-2.5 py-1.5 rounded-md bg-white text-indigo-600 shadow-sm transition">
+            EN + ខ្មែរ
+          </button>
+          <button onclick="setLanguage('en')" id="lang-en" class="px-2.5 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition">
+            EN Only
+          </button>
+          <button onclick="setLanguage('km')" id="lang-km" class="px-2.5 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition khmer-text">
+            ខ្មែរ
+          </button>
+        </div>
+
+        <!-- Live Timer -->
+        <div class="flex items-center gap-2 bg-slate-900 text-white px-3.5 py-1.5 rounded-lg text-sm font-mono shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="timerDisplay">00:00</span>
+        </div>
+
+        <!-- New Random 50 Button -->
+        <button onclick="startNewRandomExam()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg shadow-sm transition flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          <span>New Random 50 / ប្ដូរវិញ្ញាសាថ្មី</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="max-w-7xl mx-auto w-full px-4 py-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- Left Sidebar: Progress, Filters & 50-Question Matrix -->
+    <aside class="lg:col-span-4 xl:col-span-3 space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm sticky top-20 space-y-4">
+        
+        <!-- Progress Bar -->
+        <div>
+          <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1.5">
+            <span>Progress / ការធ្វើវិញ្ញាសា</span>
+            <span id="progressText">0 / 50 Answered</span>
+          </div>
+          <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+            <div id="progressBar" class="h-full bg-indigo-600 transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Topic Filter -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            Filter Topic / ជ្រើសរើសប្រធានបទ
+          </label>
+          <select id="topicFilter" onchange="renderQuestions()" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="ALL">All 8 Syllabus Topics (50)</option>
+            <option value="AI Landscape">1. AI Landscape</option>
+            <option value="Python & Concurrency">2. Python Virtual Env & Concurrency</option>
+            <option value="NumPy & Preprocessing">3. Data Handling in NumPy & Preprocessing</option>
+            <option value="ML Workflow">4. Machine Learning Workflow</option>
+            <option value="Vectors & Distance">5. Vector Ops, Cosine Similarity & Distance</option>
+            <option value="Regression & Overfitting">6. Regression Loss & Overfitting</option>
+            <option value="Classification & Evaluation">7. Classification & Performance Evaluation</option>
+            <option value="Gradient Descent & Generalization">8. Gradient Descent & Generalization</option>
+          </select>
+        </div>
+
+        <!-- Question Type Filter -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            Question Type / ប្រភេទសំណួរ
+          </label>
+          <select id="typeFilter" onchange="renderQuestions()" class="w-full text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="ALL">All Types (T/F, MCQ, Fill, Exercise, Q&A)</option>
+            <option value="TF">True / False (ពិត ឬ មិនពិត)</option>
+            <option value="MCQ">Multiple Choice (ជ្រើសរើសចម្លើយ)</option>
+            <option value="FILL">Fill in the Blank (បំពេញចន្លោះ)</option>
+            <option value="EX">Exercise / Calculation (លំហាត់គណនា)</option>
+            <option value="QA">Q&A Conceptual (សំណួរទ្រឹស្ដី)</option>
+          </select>
+        </div>
+
+        <!-- 50-Question Navigator Grid -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Question Matrix (1–50)</span>
+            <span class="text-[11px] text-slate-400">Click to jump</span>
+          </div>
+          <div id="questionMatrix" class="grid grid-cols-10 gap-1.5 max-h-56 overflow-y-auto custom-scroll p-1"></div>
+        </div>
+
+        <!-- Submit Exam Button -->
+        <div class="pt-2 border-t border-slate-100 space-y-2">
+          <button onclick="submitExam()" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-4 rounded-xl shadow transition text-sm">
+            Submit Exam & See Score / បញ្ជូនវិញ្ញាសា
+          </button>
+          <button onclick="browseAllBank()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2 px-3 rounded-xl transition text-xs">
+            View Full 208-Question Bank / មើលសំណួរទាំងអស់ ២០៨
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Column: Results Dashboard + Questions List -->
+    <section class="lg:col-span-8 xl:col-span-9 space-y-6">
+
+      <!-- Results Summary Banner (Hidden until submitted) -->
+      <div id="resultBanner" class="hidden bg-white rounded-2xl border-2 border-indigo-500 p-6 shadow-md space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-100 text-indigo-700 mb-1">
+              Exam Completed • លទ្ធផលប្រឡង
+            </span>
+            <h2 class="text-2xl font-bold text-slate-900" id="scoreHeadline">Score: 0 / 50 (0%)</h2>
+            <p class="text-sm text-slate-600 khmer-text" id="scoreSubtext"></p>
+          </div>
+          <div class="flex gap-3">
+            <div class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-center">
+              <div class="text-xs text-slate-500">Time Taken / រយៈពេល</div>
+              <div class="text-lg font-bold font-mono text-slate-800" id="finalTimeTaken">00:00</div>
+            </div>
+            <button onclick="startNewRandomExam()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2.5 rounded-xl text-sm shadow">
+              Retake with New Random 50
+            </button>
+          </div>
+        </div>
+        <!-- Topic Breakdown Grid -->
+        <div id="topicBreakdownGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3"></div>
+      </div>
+
+      <!-- Questions Container -->
+      <div id="questionsContainer" class="space-y-4"></div>
+
+    </section>
+  </main>
+
+  <script>
+    // ============================================================================
+    // 1. CURATED CORE QUESTIONS (59 Core Syllabus + Mentor Bonus Questions, EN + KM)
+    // ============================================================================
+    const coreQuestions = [
+      // --- TOPIC 1: AI LANDSCAPE ---
+      {
+        topic: "AI Landscape", type: "TF",
+        en: "Deep Learning is a subset of Machine Learning, which is a subset of Artificial Intelligence.",
+        km: "Deep Learning គឺជាផ្នែកមួយនៃ Machine Learning ហើយ Machine Learning គឺជាផ្នែកមួយនៃ Artificial Intelligence (AI)។",
+        options: ["True", "False"], ans: "True",
+        expEn: "AI is the broadest field; Machine Learning learns patterns from data; Deep Learning uses multi-layered neural networks.",
+        expKm: "AI គឺជាវិស័យទូលំទូលាយបំផុត ចំណែក ML រៀនលំនាំពីទិន្នន័យ ហើយ DL ប្រើបណ្ដាញសរសៃប្រសាទសិប្បនិម្មិតច្រើនស្រទាប់ (Multi-layered Neural Networks)។"
+      },
+      {
+        topic: "AI Landscape", type: "MCQ",
+        en: "Which type of AI system is designed to perform a single dedicated task rather than general human-like reasoning?",
+        km: "តើប្រព័ន្ធ AI ប្រភេទណាដែលត្រូវបានបង្កើតឡើងដើម្បីធ្វើកិច្ចការជាក់លាក់ណាមួយ ជាជាងការគិតពិចារណាទូទៅដូចមនុស្ស?",
+        options: ["Narrow AI (Weak AI)", "Artificial General Intelligence (AGI)", "Artificial Superintelligence (ASI)", "Quantum Symbolic AI"],
+        ans: "Narrow AI (Weak AI)",
+        expEn: "Narrow AI (Weak AI) operates within a limited, specific constraint (e.g., spam filtering, chess, facial recognition).",
+        expKm: "Narrow AI (ឬ Weak AI) ត្រូវបានបង្វឹកសម្រាប់តែកិច្ចការជាក់លាក់មួយប៉ុណ្ណោះ ដូចជាការច្រោះអ៊ីមែលឥតបានការ ឬការស្គាល់មុខមនុស្ស។"
+      },
+      {
+        topic: "AI Landscape", type: "FILL",
+        en: "In Reinforcement Learning, an agent interacts with an environment and learns sequential actions by maximizing cumulative ________.",
+        km: "នៅក្នុង Reinforcement Learning ភ្នាក់ងារ (Agent) ធ្វើអន្តរកម្មជាមួយបរិស្ថាន ហើយរៀនធ្វើការសម្រេចចិត្តដោយបង្កើន ________ សរុបឱ្យបានខ្ពស់បំផុត។",
+        ans: "reward",
+        expEn: "Reinforcement Learning agents optimize policies to maximize cumulative reward.",
+        expKm: "ភ្នាក់ងារ Reinforcement Learning រៀនតាមរយៈការបង្កើនរង្វាន់សរុប (Cumulative Reward)។"
+      },
+      {
+        topic: "AI Landscape", type: "QA",
+        en: "Explain the fundamental difference between Discriminative models and Generative models.",
+        km: "ចូរពន្យល់ពីភាពខុសគ្នាជាមូលដ្ឋានរវាង Discriminative Models និង Generative Models។",
+        ans: "Discriminative models learn P(Y|X) decision boundaries; Generative models learn P(X,Y) or P(X) to generate new data.",
+        keywords: ["boundary", "p(y|x)", "generate", "distribution", "ព្រំដែន", "បង្កើតទិន្នន័យ"],
+        expEn: "Discriminative models learn the decision boundary P(Y|X) (e.g., Logistic Regression, SVM). Generative models learn the underlying data distribution P(X) or P(X,Y) to sample new instances.",
+        expKm: "Discriminative ម៉ូដែលរៀនពីព្រំដែនបែងចែក P(Y|X) រីឯ Generative ម៉ូដែលរៀនពីរបាយទិន្នន័យដើម្បីបង្កើតទិន្នន័យថ្មីៗ។"
+      },
+      {
+        topic: "AI Landscape", type: "MCQ",
+        en: "Grouping raw unlabeled customer purchasing histories into distinct behavioral segments is an example of:",
+        km: "ការបែងចែកទិន្នន័យអតិថិជនដែលគ្មានស្លាក (Unlabeled data) ទៅជាក្រុមតាមទម្លាប់ទិញទំនិញ គឺជាឧទាហរណ៍នៃ៖",
+        options: ["Unsupervised Learning (Clustering)", "Supervised Learning (Regression)", "Supervised Learning (Classification)", "Reinforcement Learning"],
+        ans: "Unsupervised Learning (Clustering)",
+        expEn: "Discovering hidden structure or clusters in unlabeled data is Unsupervised Learning.",
+        expKm: "ការរកមើលរចនាសម្ព័ន្ធ ឬការបែងចែកក្រុម (Clustering) លើទិន្នន័យដែលគ្មានស្លាក គឺជា Unsupervised Learning។"
+      },
+      {
+        topic: "AI Landscape", type: "MCQ",
+        en: "What was the main limitation of Symbolic (Rule-Based) AI that led to the rise of Statistical Machine Learning?",
+        km: "តើអ្វីជាដែនកំណត់ចម្បងនៃ Symbolic AI (ប្រព័ន្ធផ្អែកលើច្បាប់ IF-THEN) ដែលនាំឱ្យមានការរីកចម្រើននៃ Machine Learning?",
+        options: [
+          "Inability to scale and handle noisy, unstructured real-world data (images, audio, text)",
+          "Inability to evaluate basic IF-THEN boolean logic",
+          "Symbolic AI required too many GPUs",
+          "It could only output probabilities between 0 and 1"
+        ],
+        ans: "Inability to scale and handle noisy, unstructured real-world data (images, audio, text)",
+        expEn: "Hand-crafting rules fails when facing noisy, ambiguous, high-dimensional unstructured data.",
+        expKm: "ការសរសេរច្បាប់ដោយដៃមិនអាចគ្រប់គ្រងទិន្នន័យស្មុគស្មាញ និងមិនមានរចនាសម្ព័ន្ធច្បាស់លាស់ដូចជារូបភាព ឬសំឡេងបានទេ។"
+      },
+
+      // --- TOPIC 2: PYTHON VIRTUAL ENVIRONMENT & CONCURRENCY ---
+      {
+        topic: "Python & Concurrency", type: "MCQ",
+        en: "Which command creates an isolated Python 3 virtual environment named 'ai_env'?",
+        km: "តើពាក្យបញ្ជា (Command) មួយណាដែលបង្កើត Virtual Environment ឈ្មោះ 'ai_env' ក្នុង Python 3?",
+        options: ["python -m venv ai_env", "pip create env ai_env", "python --virtual ai_env", "venv --init ai_env"],
+        ans: "python -m venv ai_env",
+        expEn: "Python's built-in venv module is invoked via `python -m venv <name>`.",
+        expKm: "ម៉ូឌុល venv របស់ Python ត្រូវបានហៅប្រើតាមរយៈ `python -m venv ai_env`។"
+      },
+      {
+        topic: "Python & Concurrency", type: "FILL",
+        en: "To export all installed packages and exact versions to a file, you run: pip freeze > ________.txt",
+        km: "ដើម្បីរក្សាទុកបញ្ជីកញ្ចប់បណ្ណាល័យ (Packages) និងជំនាន់ពិតប្រាកដទៅក្នុងឯកសារ អ្នកត្រូវប្រើ៖ pip freeze > ________.txt",
+        ans: "requirements",
+        expEn: "`pip freeze > requirements.txt` is the standard way to lock dependencies.",
+        expKm: "`pip freeze > requirements.txt` គឺជាវិធីស្តង់ដារសម្រាប់រក្សាទុកបញ្ជីកញ្ចប់បណ្ណាល័យដែលបានដំឡើង។"
+      },
+      {
+        topic: "Python & Concurrency", type: "TF",
+        en: "In standard CPython, multiple native threads running CPU-heavy pure Python code execute in parallel across multiple CPU cores simultaneously.",
+        km: "នៅក្នុង CPython ការប្រើប្រាស់ Thread ច្រើនសម្រាប់កិច្ចការគណនាធ្ងន់ៗលើ CPU (CPU-bound) នឹងដំណើរការព្រមគ្នាលើ CPU Cores ច្រើនក្នុងពេលតែមួយ។",
+        options: ["True", "False"], ans: "False",
+        expEn: "False! CPython's Global Interpreter Lock (GIL) allows only one thread to execute Python bytecode at a time.",
+        expKm: "មិនពិតទេ! ដោយសារតែ Global Interpreter Lock (GIL) ក្នុង CPython វាអនុញ្ញាតឱ្យតែ Thread មួយប៉ុណ្ណោះដំណើរការ Python Bytecode ក្នុងពេលតែមួយ។"
+      },
+      {
+        topic: "Python & Concurrency", type: "QA",
+        en: "When should you choose `multiprocessing` vs `threading` vs `asyncio` in Python AI pipelines?",
+        km: "តើនៅពេលណាដែលអ្នកគួរជ្រើសរើសប្រើ `multiprocessing` ធៀបនឹង `threading` និង `asyncio` ក្នុងការងារ AI?",
+        ans: "multiprocessing for CPU-bound tasks; threading for blocking I/O; asyncio for high-concurrency network/API I/O.",
+        keywords: ["cpu", "i/o", "gil", "process", "network", "api"],
+        expEn: "Use `multiprocessing` to bypass the GIL for CPU-heavy tasks; `threading` for blocking I/O; `asyncio` for high-volume non-blocking network/LLM API calls.",
+        expKm: "ប្រើ `multiprocessing` សម្រាប់ការងារធ្ងន់លើ CPU (ឆ្លងផុត GIL), ប្រើ `threading` សម្រាប់ការងារ I/O និង `asyncio` សម្រាប់ការហៅ API ច្រើនក្នុងពេលតែមួយ។"
+      },
+      {
+        topic: "Python & Concurrency", type: "EX",
+        en: "You send 15 independent LLM API requests concurrently using `asyncio.gather()`. If each request takes 300ms on the server, approximately how many milliseconds will the entire batch take?",
+        km: "អ្នកផ្ញើសំណើ API ចំនួន 15 ក្នុងពេលតែមួយដោយប្រើ `asyncio.gather()`។ បើសំណើនីមួយៗចំណាយពេល 300ms តើសំណើទាំង 15 នឹងចំណាយពេលប្រហែលប៉ុន្មាន ms?",
+        ans: "300",
+        expEn: "Because requests run concurrently over non-blocking I/O, total time equals the single slowest request (~300ms) rather than 15 * 300 = 4500ms.",
+        expKm: "ដោយសារវាដំណើរការព្រមគ្នា (Non-blocking I/O) រយៈពេលសរុបគឺស្មើនឹងសំណើមួយដែលយឺតជាងគេ (~300ms) មិនមែន 4500ms ទេ។"
+      },
+      {
+        topic: "Python & Concurrency", type: "MCQ",
+        en: "Why should you add `.venv/` to `.gitignore` instead of committing it to Git?",
+        km: "ហេតុអ្វីបានជាយើងត្រូវដាក់ថត `.venv/` ក្នុង `.gitignore` ជំនួសឱ្យការបង្ហោះវាចូលក្នុង Git Repository?",
+        options: [
+          "It contains OS-specific binaries and thousands of heavy vendor files that break cross-platform portability",
+          "Git does not allow folders starting with a dot",
+          "Virtual environments delete source code automatically",
+          "Python cannot import packages if tracked by Git"
+        ],
+        ans: "It contains OS-specific binaries and thousands of heavy vendor files that break cross-platform portability",
+        expEn: "Virtual environments contain OS-specific compiled files and absolute paths; share `requirements.txt` instead.",
+        expKm: "ព្រោះក្នុង `.venv/` មានឯកសារ Binary អាស្រ័យលើប្រព័ន្ធប្រតិបត្តិការ និងមានទំហំធំ។ យើងគួរចែករំលែកតែ `requirements.txt` ប៉ុណ្ណោះ។"
+      },
+
+      // --- TOPIC 3: DATA HANDLING IN NUMPY & PREPROCESSING ---
+      {
+        topic: "NumPy & Preprocessing", type: "EX",
+        en: "Given NumPy array A with shape (5, 1, 8) and array B with shape (4, 8), what is the resulting shape of A + B?",
+        km: "គេមាន NumPy Array A ទំហំ (5, 1, 8) និង Array B ទំហំ (4, 8)។ តើផលបូក A + B នឹងមានទំហំ (Shape) ប៉ុន្មាន?",
+        ans: "(5, 4, 8)",
+        expEn: "Aligning trailing dimensions: (5, 1, 8) + (1, 4, 8) broadcasts to (5, 4, 8).",
+        expKm: "តាមច្បាប់ Broadcasting ពីស្ដាំទៅឆ្វេង៖ (5, 1, 8) និង (1, 4, 8) នឹងបញ្ចូលគ្នាបានទំហំ (5, 4, 8)។"
+      },
+      {
+        topic: "NumPy & Preprocessing", type: "FILL",
+        en: "If a 2D NumPy array `X` has shape (8, 5), calling `X.reshape(-1)` produces a 1D array of length ________.",
+        km: "ប្រសិនបើ NumPy Array `X` មានទំហំ (8, 5) នោះការហៅ `X.reshape(-1)` នឹងបង្កើត Array 1D ដែលមានប្រវែង ________។",
+        ans: "40",
+        expEn: "8 * 5 = 40 total elements. `.reshape(-1)` flattens the array into a 1D vector of 40 elements.",
+        expKm: "ចំនួនធាតុសរុបគឺ 8 × 5 = 40។ ការប្រើ `.reshape(-1)` នឹងបំប្លែងវាទៅជាវ៉ិចទ័រ 1D ដែលមាន 40 ធាតុ។"
+      },
+      {
+        topic: "NumPy & Preprocessing", type: "TF",
+        en: "NumPy vectorized operations are much faster than standard Python `for` loops because they run pre-compiled C/Fortran code on contiguous memory blocks.",
+        km: "ប្រតិបត្តិការ Vectorization ក្នុង NumPy លឿនជាងការប្រើ `for` loop ធម្មតាក្នុង Python ព្រោះវាដំណើរការលើកូដ C/Fortran និងប្រើប្រាស់អង្គចងចាំជាប់គ្នា (Contiguous Memory)។",
+        options: ["True", "False"], ans: "True",
+        expEn: "NumPy avoids dynamic Python type-checking per element and leverages SIMD instructions in C.",
+        expKm: "ពិត! NumPy ដំណើរការដោយផ្ទាល់លើកូដ C ដែលបាន Compile រួច និងមិនចាំបាច់ត្រួតពិនិត្យប្រភេទទិន្នន័យម្ដងមួយៗដូច Python loop ទេ។"
+      },
+      {
+        topic: "NumPy & Preprocessing", type: "MCQ",
+        en: "Why must we call `scaler.fit_transform(X_train)` on the training set, and ONLY `scaler.transform(X_test)` on the test set?",
+        km: "ហេតុអ្វីបានជាយើងត្រូវប្រើ `scaler.fit_transform(X_train)` លើទិន្នន័យបង្វឹក ប៉ុន្តែប្រើតែ `scaler.transform(X_test)` ប៉ុណ្ណោះលើទិន្នន័យតេស្ត?",
+        options: [
+          "To prevent Data Leakage so test set statistics (mean/std) never influence training",
+          "Because `fit_transform` only accepts arrays with more than 1,000 rows",
+          "Because test data does not have numerical columns",
+          "To convert the test set into string labels"
+        ],
+        ans: "To prevent Data Leakage so test set statistics (mean/std) never influence training",
+        expEn: "Fitting on test data leaks test distribution statistics into the model evaluation, causing overly optimistic scores.",
+        expKm: "ដើម្បីការពារការលេចធ្លាយទិន្នន័យ (Data Leakage) មិនឱ្យព័ត៌មានពីទិន្នន័យតេស្ត (ដូចជាមធ្យមភាគ Mean ឬ Std) ជ្រៀតចូលក្នុងដំណើរការបង្វឹក។"
+      },
+      {
+        topic: "NumPy & Preprocessing", type: "QA",
+        en: "Compare `StandardScaler` and `MinMaxScaler`. Which one is more heavily distorted by extreme outliers, and why?",
+        km: "ចូរប្រៀបធៀប `StandardScaler` និង `MinMaxScaler`។ តើមួយណាងាយរងផលប៉ះពាល់ខ្លាំងជាងគេដោយសារទិន្នន័យខុសប្រក្រតី (Outliers)? ព្រោះអ្វី?",
+        ans: "MinMaxScaler scales to [0,1] using min and max, so a single extreme outlier squashes all normal data into a tiny range. StandardScaler uses mean and std (z-score).",
+        keywords: ["minmax", "outlier", "min", "max", "mean", "std", "0", "1"],
+        expEn: "MinMaxScaler uses (x - min)/(max - min), so one huge outlier stretches max and compresses all normal points. StandardScaler uses z = (x - mean)/std.",
+        expKm: "MinMaxScaler ប្រើតម្លៃតូចបំផុត (Min) និងធំបំផុត (Max) ដូច្នេះបើមាន Outlier ធំមួយ វានឹងធ្វើឱ្យទិន្នន័យធម្មតាទាំងអស់រួមតូចទៅជិតគ្នា។"
+      },
+      {
+        topic: "NumPy & Preprocessing", type: "MCQ",
+        en: "Which encoding method is best for an unordered (nominal) categorical feature like `City = ['Phnom Penh', 'Siem Reap', 'Battambang']` so the model doesn't assume a fake numerical order?",
+        km: "តើវិធីបំប្លែងទិន្នន័យ (Encoding) មួយណាដែលសាកសមបំផុតសម្រាប់ទិន្នន័យប្រភេទឈ្មោះដែលគ្មានលំដាប់ថ្នាក់ ដូចជា `City = ['Phnom Penh', 'Siem Reap', 'Battambang']`?",
+        options: ["One-Hot Encoding", "Ordinal Encoding (0, 1, 2)", "MinMax Scaling", "Binarization Thresholding"],
+        ans: "One-Hot Encoding",
+        expEn: "One-Hot Encoding creates binary columns so the model does not assume Battambang (2) > Siem Reap (1) > Phnom Penh (0).",
+        expKm: "One-Hot Encoding បង្កើតជួរឈរ Binary (0 និង 1) ដាច់ដោយឡែកពីគ្នា ដើម្បីកុំឱ្យម៉ូដែលយល់ច្រឡំថាទីក្រុងមួយមានតម្លៃធំជាងទីក្រុងមួយទៀត។"
+      },
+
+      // --- TOPIC 4: MACHINE LEARNING WORKFLOW ---
+      {
+        topic: "ML Workflow", type: "QA",
+        en: "What is the difference between Regression and Classification in Machine Learning? (Mentor Bonus Q1)",
+        km: "តើ Regression និង Classification ក្នុង Machine Learning ខុសគ្នាដូចម្ដេច? (សំណួររំលឹកពី Mentor ទី ១)",
+        ans: "Regression predicts continuous numerical values (e.g., house price, temperature), whereas Classification predicts discrete categorical class labels (e.g., spam vs not spam).",
+        keywords: ["continuous", "discrete", "categorical", "number", "class", "label", "បន្ត", "ដាច់"],
+        expEn: "Regression predicts continuous quantities (evaluated via MSE, MAE, R2); Classification predicts discrete categories (evaluated via Accuracy, Precision, Recall, F1, AUC).",
+        expKm: "Regression ទស្សន៍ទាយតម្លៃលេខជាប់ៗគ្នា (Continuous ដូចជាតម្លៃផ្ទះ ឬសីតុណ្ហភាព) ចំណែក Classification ទស្សន៍ទាយប្រភេទក្រុមដាច់ពីគ្នា (Discrete Labels ដូចជា Spam ឬ Not Spam)។"
+      },
+      {
+        topic: "ML Workflow", type: "MCQ",
+        en: "What is the key difference between a Model Parameter and a Hyperparameter?",
+        km: "តើអ្វីជាភាពខុសគ្នាសំខាន់រវាង Model Parameter និង Hyperparameter?",
+        options: [
+          "Parameters (weights, bias) are learned automatically from training data; Hyperparameters (learning rate, k) are set manually before training",
+          "Hyperparameters are learned via gradient descent; Parameters are chosen by the user",
+          "Parameters only exist in Decision Trees",
+          "There is no difference between them"
+        ],
+        ans: "Parameters (weights, bias) are learned automatically from training data; Hyperparameters (learning rate, k) are set manually before training",
+        expEn: "Weights and biases are internal model parameters learned during fit(); learning rate, regularization lambda, and k in k-NN are hyperparameters.",
+        expKm: "Parameters (ដូចជាទម្ងន់ w និង b) ត្រូវបានម៉ូដែលរៀនដោយស្វ័យប្រវត្តិពីទិន្នន័យ ចំណែក Hyperparameters (ដូចជា Learning rate ឬតម្លៃ k) ត្រូវបានកំណត់ដោយអ្នកអភិវឌ្ឍន៍មុនពេលបង្វឹក។"
+      },
+      {
+        topic: "ML Workflow", type: "FILL",
+        en: "In 5-Fold Cross-Validation on a dataset of 2,000 samples, each fold contains ________ validation samples.",
+        km: "នៅក្នុង 5-Fold Cross-Validation លើទិន្នន័យសរុបចំនួន 2,000 គំរូ តើ Fold នីមួយៗមានទិន្នន័យសម្រាប់ផ្ទៀងផ្ទាត់ (Validation) ចំនួន ________ គំរូ?",
+        ans: "400",
+        expEn: "2,000 / 5 folds = 400 samples per validation fold (with 1,600 used for training in each iteration).",
+        expKm: "ចែកទិន្នន័យសរុបជា 5 ផ្នែកស្មើគ្នា៖ 2000 / 5 = 400 គំរូក្នុងមួយ Fold។"
+      },
+      {
+        topic: "ML Workflow", type: "TF",
+        en: "Tuning your hyperparameters repeatedly against the final Test Set until test accuracy reaches 99% is good Machine Learning practice.",
+        km: "ការកែតម្រូវ Hyperparameters ម្ដងហើយម្ដងទៀតដោយផ្អែកលើលទ្ធផលនៃទិន្នន័យតេស្ត (Test Set) គឺជាការអនុវត្តដ៏ល្អក្នុង Machine Learning។",
+        options: ["True", "False"], ans: "False",
+        expEn: "False! Using the test set to tune hyperparameters leaks test information and overfits to the test split. Always use a Validation set or Cross-Validation.",
+        expKm: "មិនពិតទេ! ការធ្វើបែបនេះធ្វើឱ្យម៉ូដែល Overfit ទៅលើទិន្នន័យតេស្ត។ យើងត្រូវប្រើ Validation Set សម្រាប់កែតម្រូវ Hyperparameters។"
+      },
+      {
+        topic: "ML Workflow", type: "QA",
+        en: "Suppose we want to predict whether an email is Spam or Not Spam: Can we use Regression? Can we use Classification? Which is more appropriate and why? (Mentor Bonus Q8)",
+        km: "ឧបមាថាយើងចង់ទស្សន៍ទាយថាអ៊ីមែលមួយជា Spam ឬ Not Spam៖ តើយើងអាចប្រើ Regression បានទេ? អាចប្រើ Classification បានទេ? មួយណាសមស្របជាង ព្រោះអ្វី? (សំណួរ Mentor ទី ៨)",
+        ans: "Classification is much more appropriate because the target is discrete binary classes, outputs stay bounded in [0,1] probabilities, and it is not distorted by outliers like Linear Regression MSE.",
+        keywords: ["classification", "discrete", "binary", "probability", "outlier", "0", "1"],
+        expEn: "While you could threshold Linear Regression, it outputs unbounded values (<0 or >1) and MSE is skewed by outliers. Classification (Logistic Regression) bounds probabilities in [0,1].",
+        expKm: "Classification សមស្របជាងព្រោះលទ្ធផលជាប្រភេទដាច់ពីគ្នា (០ ឬ ១) ផ្តល់តម្លៃប្រូបាប៊ីលីតេចន្លោះ [0, 1] និងមិនងាយរងផលប៉ះពាល់ពី Outliers ដូចការប្រើ Linear Regression ជាមួយ MSE នោះទេ។"
+      },
+
+      // --- TOPIC 5: VECTOR OPERATIONS, COSINE SIMILARITY & DISTANCE ---
+      {
+        topic: "Vectors & Distance", type: "EX",
+        en: "Calculate the dot product of vectors u = [2, 5] and v = [5, -2]. Are they orthogonal?",
+        km: "ចូរគណនាផលគុណស្កាលែ (Dot Product) នៃវ៉ិចទ័រ u = [2, 5] និង v = [5, -2]។ (បញ្ចូលតម្លៃលេខនៃផលគុណស្កាលែ)",
+        ans: "0",
+        expEn: "(2 * 5) + (5 * -2) = 10 - 10 = 0. Since the dot product is 0, the vectors are perpendicular (orthogonal).",
+        expKm: "u · v = (2 × 5) + (5 × -2) = 10 - 10 = 0។ ដោយសារផលគុណស្កាលែស្មើ 0 វ៉ិចទ័រទាំងពីរកែងគ្នា (Orthogonal)។"
+      },
+      {
+        topic: "Vectors & Distance", type: "EX",
+        en: "Calculate the Euclidean Distance (L2) between point P = (1, 2) and point Q = (4, 6).",
+        km: "ចូរគណនាចម្ងាយ Euclidean (L2 norm) រវាងចំណុច P = (1, 2) និង Q = (4, 6)។",
+        ans: "5",
+        expEn: "sqrt((4 - 1)^2 + (6 - 2)^2) = sqrt(9 + 16) = sqrt(25) = 5.",
+        expKm: "តាមរូបមន្ត √((4 - 1)² + (6 - 2)²) = √(3² + 4²) = √(9 + 16) = √25 = 5។"
+      },
+      {
+        topic: "Vectors & Distance", type: "EX",
+        en: "Calculate the Manhattan Distance (L1) between point P = (1, 2) and point Q = (4, 6).",
+        km: "ចូរគណនាចម្ងាយ Manhattan (L1 norm) រវាងចំណុច P = (1, 2) និង Q = (4, 6)។",
+        ans: "7",
+        expEn: "|4 - 1| + |6 - 2| = 3 + 4 = 7.",
+        expKm: "តាមរូបមន្ត |4 - 1| + |6 - 2| = 3 + 4 = 7។"
+      },
+      {
+        topic: "Vectors & Distance", type: "FILL",
+        en: "If two non-zero vectors point in the exact same direction (angle = 0 degrees), their Cosine Similarity is ________.",
+        km: "ប្រសិនបើវ៉ិចទ័រពីរមានទិសដៅដូចគ្នាបេះបិទ (មុំ 0 ដឺក្រេ) នោះតម្លៃ Cosine Similarity របស់វាស្មើនឹង ________។",
+        ans: "1",
+        expEn: "cos(0°) = 1.0.",
+        expKm: "ព្រោះ cos(0°) = 1។"
+      },
+      {
+        topic: "Vectors & Distance", type: "QA",
+        en: "What is the k-Nearest Neighbors (k-NN) algorithm and how does it work step-by-step? (Mentor Bonus Q6)",
+        km: "តើក្បួនដោះស្រាយ k-Nearest Neighbors (k-NN) គឺជាអ្វី ហើយវាដំណើរការយ៉ាងដូចម្ដេច? (សំណួរ Mentor ទី ៦)",
+        ans: "k-NN is a non-parametric lazy learning algorithm. It chooses k, computes distances from the query point to all training points, picks the k closest neighbors, and predicts via majority vote (classification) or average (regression).",
+        keywords: ["distance", "neighbor", "vote", "majority", "lazy", "k", "ចម្ងាយ", "បោះឆ្នោត"],
+        expEn: "1. Pick k. 2. Compute distance to all training points. 3. Select k closest points. 4. Majority vote (classification) or mean value (regression). Feature scaling is mandatory!",
+        expKm: "១. កំណត់ចំនួន k ២. គណនាចម្ងាយពីចំណុចថ្មីទៅគ្រប់ចំណុចក្នុងទិន្នន័យបង្វឹក ៣. ជ្រើសរើសចំណុចដែលជិតបំផុតចំនួន k ៤. បោះឆ្នោតយកភាគច្រើន (សម្រាប់ Classification) ឬគណនាមធ្យមភាគ (សម្រាប់ Regression)។"
+      },
+      {
+        topic: "Vectors & Distance", type: "QA",
+        en: "What are the different types of distance metrics used in k-NN? (Mentor Bonus Q7)",
+        km: "តើមានរង្វាស់ចម្ងាយ (Distance Metrics) អ្វីខ្លះដែលគេនិយមប្រើនៅក្នុង k-NN? (សំណួរ Mentor ទី ៧)",
+        ans: "Euclidean distance (L2), Manhattan distance (L1), Minkowski distance, Cosine distance, and Hamming distance.",
+        keywords: ["euclidean", "manhattan", "minkowski", "cosine", "hamming", "l1", "l2"],
+        expEn: "Common k-NN metrics: Euclidean (L2 straight-line), Manhattan (L1 city-block), Minkowski (generalized L_p), Cosine (angle-based), and Hamming (categorical/binary differences).",
+        expKm: "រង្វាស់ចម្ងាយរួមមាន៖ Euclidean (L2), Manhattan (L1), Minkowski, Cosine Distance និង Hamming Distance។"
+      },
+
+      // --- TOPIC 6: REGRESSION LOSS & OVERFITTING ---
+      {
+        topic: "Regression & Overfitting", type: "MCQ",
+        en: "Which regression loss function is MORE ROBUST (less sensitive) to extreme outliers in the target variable?",
+        km: "តើអនុគមន៍គណនាកំហុស (Loss Function) មួយណាដែលធន់នឹងទិន្នន័យខុសប្រក្រតី (Outliers) បានល្អជាង?",
+        options: ["Mean Absolute Error (MAE)", "Mean Squared Error (MSE)", "Root Mean Squared Error (RMSE)", "Exponential Squared Loss"],
+        ans: "Mean Absolute Error (MAE)",
+        expEn: "MSE squares the errors (e^2), magnifying large outliers exponentially. MAE uses |e|, penalizing errors linearly.",
+        expKm: "MAE ប្រើតម្លៃដាច់ខាត |y - y_hat| ដែលកើនឡើងតាមលីនេអ៊ែរ ចំណែក MSE លើកកំហុសជាការ៉េ (y - y_hat)² ដែលធ្វើឱ្យកំហុស Outlier កាន់តែធំទ្វេដង។"
+      },
+      {
+        topic: "Regression & Overfitting", type: "FILL",
+        en: "L1 regularization is called ________ Regression, which can shrink unimportant feature weights all the way to exact zero.",
+        km: "L1 Regularization ត្រូវបានគេហៅថា ________ Regression ដែលអាចបង្រួមមេគុណទម្ងន់នៃ Feature ដែលមិនសំខាន់ឱ្យក្លាយជាសូន្យ (0) តែម្ដង។",
+        ans: "Lasso",
+        expEn: "Lasso (L1) adds lambda * sum(|w_j|), inducing sparsity and automatic feature selection.",
+        expKm: "Lasso Regression (L1) បន្ថែមពិន័យលើតម្លៃដាច់ខាតនៃទម្ងន់ |w| ដែលជួយជ្រើសរើស Feature ដោយស្វ័យប្រវត្តិ។"
+      },
+      {
+        topic: "Regression & Overfitting", type: "EX",
+        en: "Given true values y = [4, 2] and predicted values y_hat = [2, 4], calculate the Mean Squared Error (MSE).",
+        km: "គេមានតម្លៃពិត y = [4, 2] និងតម្លៃទស្សន៍ទាយ y_hat = [2, 4]។ ចូរគណនាតម្លៃ Mean Squared Error (MSE)។",
+        ans: "4",
+        expEn: "Errors: (4-2)=2 and (2-4)=-2. Squared errors: 2^2 = 4 and (-2)^2 = 4. Average = (4 + 4) / 2 = 4.",
+        expKm: "កំហុសលើកជាការ៉េ៖ (4 - 2)² = 4 និង (2 - 4)² = 4។ មធ្យមភាគ MSE = (4 + 4) / 2 = 4។"
+      },
+      {
+        topic: "Regression & Overfitting", type: "QA",
+        en: "Explain High Bias (Underfitting) vs High Variance (Overfitting) in terms of Training Error and Validation Error.",
+        km: "ចូរពន្យល់ពី High Bias (Underfitting) និង High Variance (Overfitting) ដោយផ្អែកលើកំហុសពេលបង្វឹក (Training Error) និងកំហុសពេលផ្ទៀងផ្ទាត់ (Validation Error)។",
+        ans: "High Bias (Underfitting) has high training error and high validation error. High Variance (Overfitting) has very low training error but high validation error.",
+        keywords: ["underfitting", "overfitting", "training", "validation", "high", "low"],
+        expEn: "Underfitting (High Bias): model is too simple -> poor on both train and validation. Overfitting (High Variance): memorizes noise -> great on train, poor on validation.",
+        expKm: "Underfitting (High Bias)៖ ម៉ូដែលសាមញ្ញពេក មានកំហុសខ្ពស់ទាំងលើទិន្នន័យ Train និង Validation។ Overfitting (High Variance)៖ ម៉ូដែលចាំតែទិន្នន័យ Train (កំហុស Train ទាបបំផុត ប៉ុន្តែកំហុស Validation ខ្ពស់)។"
+      },
+      {
+        topic: "Regression & Overfitting", type: "TF",
+        en: "Ridge Regression (L2 Regularization) adds the sum of squared weights (lambda * sum(w^2)) to the loss function.",
+        km: "Ridge Regression (L2 Regularization) បន្ថែមផលបូកការ៉េនៃមេគុណទម្ងន់ (lambda * sum(w²)) ទៅក្នុងអនុគមន៍ Loss។",
+        options: ["True", "False"], ans: "True",
+        expEn: "True! Ridge uses L2 penalty to shrink weights smoothly toward zero without making them exact zero.",
+        expKm: "ពិត! Ridge ប្រើពិន័យ L2 ដើម្បីបង្រួមទម្ងន់កុំឱ្យធំពេក ការពារការកើតមាន Overfitting។"
+      },
+
+      // --- TOPIC 7: CLASSIFICATION & PERFORMANCE EVALUATION ---
+      {
+        topic: "Classification & Evaluation", type: "QA",
+        en: "What happens when the F1 score reaches 1? Also explain: (2.1) Precision > Recall, and (2.2) Recall > Precision. (Mentor Bonus Q2)",
+        km: "តើមានអ្វីកើតឡើងនៅពេលពិន្ទុ F1 ស្មើនឹង 1? ហើយតើមានន័យដូចម្ដេចនៅពេល (2.1) Precision ធំជាង Recall និង (2.2) Recall ធំជាង Precision? (សំណួរ Mentor ទី ២)",
+        ans: "F1 = 1 means both Precision = 1 (FP=0) and Recall = 1 (FN=0). Precision > Recall means FP < FN (conservative model). Recall > Precision means FN < FP (sensitive model).",
+        keywords: ["precision", "recall", "fp", "fn", "false positive", "false negative", "1"],
+        expEn: "F1=1 requires 0 False Positives and 0 False Negatives. Precision > Recall means fewer false alarms but misses positives (FP < FN). Recall > Precision means catches most positives but more false alarms (FN < FP).",
+        expKm: "F1 = 1 មានន័យថា Precision = 1 (FP=0) និង Recall = 1 (FN=0)។ បើ Precision > Recall មានន័យថាម៉ូដែលប្រុងប្រយ័ត្នខ្ពស់ (FP < FN)។ បើ Recall > Precision មានន័យថាម៉ូដែលចាប់យកករណីវិជ្ជមានបានច្រើនតែមានការភាន់ច្រឡំច្រើន (FN < FP)។"
+      },
+      {
+        topic: "Classification & Evaluation", type: "QA",
+        en: "Why do we use the Sigmoid function in Logistic Regression? (Mentor Bonus Q3)",
+        km: "ហេតុអ្វីបានជាយើងប្រើប្រាស់អនុគមន៍ Sigmoid នៅក្នុង Logistic Regression? (សំណួរ Mentor ទី ៣)",
+        ans: "Sigmoid squashes unbounded linear outputs (-infinity to +infinity) into a valid probability range (0, 1), provides a clear 0.5 center at z=0, resists outliers, and has a smooth derivative for gradient descent.",
+        keywords: ["probability", "0", "1", "squash", "gradient", "ប្រូបាប៊ីលីតេ"],
+        expEn: "1. Maps (-inf, +inf) to (0, 1) probabilities. 2. Center at z=0 gives p=0.5. 3. Saturates at extremes to resist outliers. 4. Smooth derivative sigma(z)*(1-sigma(z)).",
+        expKm: "១. បំប្លែងតម្លៃលីនេអ៊ែរពី (-∞, +∞) ឱ្យនៅចន្លោះប្រូបាប៊ីលីតេ (0, 1) ២. មានចំណុចកណ្ដាល 0.5 ត្រង់ z=0 ៣. ធន់នឹង Outliers និង ៤. មានដេរីវេរលូនងាយស្រួលសម្រាប់ Gradient Descent។"
+      },
+      {
+        topic: "Classification & Evaluation", type: "QA",
+        en: "What is Entropy, and why do we need to calculate it in a Decision Tree? (Mentor Bonus Q4)",
+        km: "តើ Entropy គឺជាអ្វី ហើយហេតុអ្វីបានជាយើងត្រូវគណនាវានៅក្នុង Decision Tree? (សំណួរ Mentor ទី ៤)",
+        ans: "Entropy measures node impurity or uncertainty. Decision Trees calculate Entropy to compute Information Gain and choose the feature split that produces the purest child nodes.",
+        keywords: ["impurity", "uncertainty", "information gain", "pure", "split", "ភាពមិនសុទ្ធ"],
+        expEn: "Entropy H(S) = -sum(p_i log2 p_i) measures disorder (0 = pure node, 1 = 50/50 impure). Decision trees pick splits that maximize Information Gain (largest drop in Entropy).",
+        expKm: "Entropy វាស់វែងកម្រិតមិនសុទ្ធ (Impurity) នៃទិន្នន័យក្នុង Node (H=0 គឺសុទ្ធ 100%)។ Decision Tree គណនាវាដើម្បីរក Information Gain ខ្ពស់បំផុតក្នុងការបំបែកមែកធាង។"
+      },
+      {
+        topic: "Classification & Evaluation", type: "QA",
+        en: "Why do we use Log-Odds (the Logit function) in Logistic Regression? (Mentor Bonus Q5)",
+        km: "ហេតុអ្វីបានជាយើងប្រើប្រាស់ Log-Odds (អនុគមន៍ Logit) នៅក្នុង Logistic Regression? (សំណួរ Mentor ទី ៥)",
+        ans: "Log-odds ln(p/(1-p)) maps bounded probabilities (0,1) to the full real number line (-infinity, +infinity), matching the domain of the linear equation w*x + b.",
+        keywords: ["domain", "linear", "odds", "ln", "infinity", "លីនេអ៊ែរ"],
+        expEn: "Probabilities are restricted to (0,1), while w*x+b spans (-inf, +inf). Taking log-odds ln(p/(1-p)) bridges both domains symmetrically.",
+        expKm: "ប្រូបាប៊ីលីតេ p ស្ថិតក្នុងចន្លោះ (0, 1) ប៉ុន្តែសមីការបន្ទាត់ w·x + b មានតម្លៃពី -∞ ដល់ +∞។ ការប្រើ Log-Odds ln(p/(1-p)) ជួយភ្ជាប់ដែនកំណត់ទាំងពីរឱ្យស្មើគ្នា។"
+      },
+      {
+        topic: "Classification & Evaluation", type: "QA",
+        en: "Is the classification decision threshold always 0.5? Explain when and why you would change it. (Mentor Bonus Q9)",
+        km: "តើកម្រិតកំណត់ការសម្រេចចិត្ត (Classification Threshold) តែងតែស្មើ 0.5 មែនទេ? ចូរពន្យល់ថាតើពេលណាយើងត្រូវប្ដូរវា? (សំណួរ Mentor ទី ៩)",
+        ans: "No! Threshold is tunable based on error costs. Lower it (e.g., 0.2) to increase Recall when False Negatives are dangerous (cancer detection); raise it (e.g., 0.85) to increase Precision when False Positives are costly (spam auto-delete).",
+        keywords: ["no", "recall", "precision", "false negative", "false positive", "cost", "មិនមែន"],
+        expEn: "Threshold is tuned via ROC or Precision-Recall curves. Lower threshold -> higher Recall (fewer missed cases). Higher threshold -> higher Precision (fewer false alarms).",
+        expKm: "មិនមែនទេ! យើងអាចបន្ទាប Threshold (ឧ. 0.2) ដើម្បីបង្កើន Recall ក្នុងការពិនិត្យជំងឺមហារីក ឬដំឡើង Threshold (ឧ. 0.85) ដើម្បីបង្កើន Precision ក្នុងការច្រោះ Spam។"
+      },
+      {
+        topic: "Classification & Evaluation", type: "EX",
+        en: "Given TP = 90, FP = 10, FN = 30, TN = 870, calculate the Precision as a decimal (e.g., 0.9).",
+        km: "គេមាន TP = 90, FP = 10, FN = 30, TN = 870។ ចូរគណនាតម្លៃ Precision ជាទសភាគ (ឧ. 0.9)។",
+        ans: "0.9",
+        expEn: "Precision = TP / (TP + FP) = 90 / (90 + 10) = 90 / 100 = 0.9.",
+        expKm: "Precision = TP / (TP + FP) = 90 / (90 + 10) = 0.9។"
+      },
+      {
+        topic: "Classification & Evaluation", type: "MCQ",
+        en: "In a dataset with 99% normal transactions and 1% fraud, a dummy model predicts 'Normal' for every row and gets 99% accuracy. What is this phenomenon called?",
+        km: "ក្នុងទិន្នន័យដែលមានប្រតិបត្តិការធម្មតា 99% និងការក្លែងបន្លំ 1% ម៉ូដែលមួយទាយថា 'ធម្មតា' ទាំងអស់ហើយទទួលបាន Accuracy 99% ប៉ុន្តែចាប់ករណីក្លែងបន្លំមិនបានសោះ។ តើបាតុភូតនេះហៅថាអ្វី?",
+        options: ["The Accuracy Paradox", "Gradient Explosion", "Vanishing Recall", "Feature Collinearity"],
+        ans: "The Accuracy Paradox",
+        expEn: "The Accuracy Paradox occurs when high accuracy on imbalanced datasets hides a 0% Recall on the minority class.",
+        expKm: "Accuracy Paradox កើតឡើងនៅពេលទិន្នន័យមិនមានតុល្យភាព (Imbalanced Data) ដែលធ្វើឱ្យតម្លៃ Accuracy ខ្ពស់បំភាន់ភ្នែក ទោះបីជាម៉ូដែលមិនអាចចាប់ក្រុមភាគតិចបានក៏ដោយ។"
+      },
+      {
+        topic: "Classification & Evaluation", type: "FILL",
+        en: "An ROC curve plots the True Positive Rate (TPR) on the y-axis against the ________ Positive Rate (FPR) on the x-axis.",
+        km: "ខ្សែកោង ROC សង់ក្រាហ្វរវាង True Positive Rate (TPR) លើអក្សឈរ ធៀបនឹង ________ Positive Rate (FPR) លើអក្សដេក។",
+        ans: "False",
+        expEn: "ROC plots TPR (Sensitivity) vs FPR (1 - Specificity) across thresholds.",
+        expKm: "ROC បង្ហាញទំនាក់ទំនងរវាង True Positive Rate (TPR) និង False Positive Rate (FPR)។"
+      },
+
+      // --- TOPIC 8: GRADIENT DESCENT INTUITION & GENERALIZATION ---
+      {
+        topic: "Gradient Descent & Generalization", type: "EX",
+        en: "If current weight w = 5.0, learning rate alpha = 0.1, and gradient dL/dw = 8.0, what is the updated weight w_new after one gradient descent step?",
+        km: "ប្រសិនបើទម្ងន់បច្ចុប្បន្ន w = 5.0, កម្រិតរៀន (Learning rate) alpha = 0.1 និងដេរីវេនៃកំហុស dL/dw = 8.0 តើទម្ងន់ថ្មី w_new ស្មើប៉ុន្មានបន្ទាប់ពីធ្វើបច្ចុប្បន្នភាព ១ ជំហាន?",
+        ans: "4.2",
+        expEn: "w_new = w - alpha * (dL/dw) = 5.0 - (0.1 * 8.0) = 5.0 - 0.8 = 4.2.",
+        expKm: "តាមរូបមន្ត w_new = w - alpha × (dL/dw) = 5.0 - (0.1 × 8.0) = 5.0 - 0.8 = 4.2។"
+      },
+      {
+        topic: "Gradient Descent & Generalization", type: "MCQ",
+        en: "What happens if the learning rate (alpha) in Gradient Descent is set way too large?",
+        km: "តើមានអ្វីកើតឡើងប្រសិនបើកម្រិតរៀន (Learning rate alpha) ក្នុង Gradient Descent ត្រូវបានកំណត់ធំពេក?",
+        options: [
+          "The optimizer overshoots the minimum, oscillates wildly, and the loss diverges (explodes)",
+          "The model converges 100x faster to the exact global minimum without error",
+          "The model automatically switches to k-NN",
+          "All gradients become zero immediately"
+        ],
+        ans: "The optimizer overshoots the minimum, oscillates wildly, and the loss diverges (explodes)",
+        expEn: "An excessively high learning rate steps past the valley floor and bounces higher up the opposite slope, causing divergence.",
+        expKm: "ប្រសិនបើ Learning Rate ធំពេក ជំហាននៃការកែប្រែនឹងលោតរំលងចំណុចអប្បបរមា ហើយធ្វើឱ្យតម្លៃ Loss កើនឡើងកាន់តែធំ (Diverge)។"
+      },
+      {
+        topic: "Gradient Descent & Generalization", type: "FILL",
+        en: "Halting model training when validation loss starts increasing even while training loss continues to drop is called ________ Stopping.",
+        km: "ការបញ្ឈប់ការបង្វឹកម៉ូដែលនៅពេលដែលកំហុសលើទិន្នន័យ Validation ចាប់ផ្ដើមឡើងខ្ពស់ ទោះបីជាកំហុសលើទិន្នន័យ Train បន្តថយចុះក៏ដោយ ត្រូវបានគេហៅថា ________ Stopping។",
+        ans: "Early",
+        expEn: "Early Stopping prevents overfitting by stopping training at the minimum validation loss.",
+        expKm: "Early Stopping ជួយការពារកុំឱ្យម៉ូដែល Overfit ដោយបញ្ឈប់ការបង្វឹកទាន់ពេលវេលា។"
+      },
+      {
+        topic: "Gradient Descent & Generalization", type: "QA",
+        en: "Contrast Batch Gradient Descent, Stochastic Gradient Descent (SGD), and Mini-Batch Gradient Descent.",
+        km: "ចូរប្រៀបធៀបភាពខុសគ្នារវាង Batch Gradient Descent, Stochastic Gradient Descent (SGD) និង Mini-Batch Gradient Descent។",
+        ans: "Batch GD uses all training data per step (smooth but slow); SGD uses 1 sample per step (fast but noisy); Mini-Batch GD uses small batches like 32 or 64 (best balance of GPU speed and stability).",
+        keywords: ["batch", "single", "sample", "mini", "noise", "smooth", "gpu"],
+        expEn: "Batch GD: entire dataset per update. SGD: 1 sample per update. Mini-Batch GD: 32-256 samples per update, ideal for vectorized GPU training.",
+        expKm: "Batch GD គណនាលើទិន្នន័យទាំងអស់ក្នុង ១ ជំហាន (យឺតតែនឹងនរ)។ SGD គណនាលើទិន្នន័យម្ដង ១ គំរូ (លឿនតែរង្គើខ្លាំង)។ Mini-Batch GD គណនាលើកញ្ចប់តូចៗ (ឧ. 32 ឬ 64 គំរូ) ដែលមានតុល្យភាពល្អបំផុត។"
+      },
+      {
+        topic: "Gradient Descent & Generalization", type: "TF",
+        en: "The difference between a model's error on unseen test data and its error on training data is called the Generalization Gap.",
+        km: "គម្លាតរវាងកំហុសរបស់ម៉ូដែលលើទិន្នន័យតេស្តថ្មីៗ និងកំហុសលើទិន្នន័យបង្វឹក ត្រូវបានគេហៅថា Generalization Gap។",
+        options: ["True", "False"], ans: "True",
+        expEn: "Generalization Gap = Validation/Test Error - Training Error. A large gap indicates overfitting.",
+        expKm: "ពិត! Generalization Gap = កំហុសលើទិន្នន័យតេស្ត - កំហុសលើទិន្នន័យបង្វឹក។"
+      }
+    ];
+
+    // ============================================================================
+    // 2. PROCEDURAL GENERATOR TO BUILD 208 UNIQUE QUESTIONS ACROSS ALL 8 TOPICS
+    // ============================================================================
+    function buildFullQuestionBank() {
+      const bank = [...coreQuestions];
+
+      // A. Generate 20 Vector Dot Product & Distance Exercises (Topic 5)
+      const vecPairs = [
+        [[1, 2], [4, 6]], [[2, 3], [5, 7]], [[0, 0], [6, 8]], [[3, 1], [6, 5]],
+        [[-1, 2], [2, 6]], [[2, -1], [5, 3]], [[1, 1], [4, 5]], [[5, 2], [1, 5]],
+        [[3, 4], [9, 12]], [[2, 5], [7, 17]], [[1, 3], [6, 15]], [[4, 2], [10, 10]],
+        [[0, 3], [4, 0]], [[2, 2], [5, 6]], [[7, 1], [4, 5]], [[6, 2], [3, 6]],
+        [[10, 5], [7, 9]], [[8, 3], [5, 7]], [[2, 9], [5, 5]], [[4, 7], [1, 3]]
+      ];
+      vecPairs.forEach((pair, idx) => {
+        const [p, q] = pair;
+        const dx = Math.abs(q[0] - p[0]);
+        const dy = Math.abs(q[1] - p[1]);
+        const l1 = dx + dy;
+        const l2 = Math.sqrt(dx * dx + dy * dy);
+        if (idx % 2 === 0 && Number.isInteger(l2)) {
+          bank.push({
+            topic: "Vectors & Distance", type: "EX",
+            en: `[Vector Math #${idx + 1}] Compute the Euclidean Distance (L2) between point A=(${p[0]}, ${p[1]}) and point B=(${q[0]}, ${q[1]}).`,
+            km: `[លំហាត់វ៉ិចទ័រទី ${idx + 1}] ចូរគណនាចម្ងាយ Euclidean (L2) រវាងចំណុច A=(${p[0]}, ${p[1]}) និង B=(${q[0]}, ${q[1]})។`,
+            ans: String(l2),
+            expEn: `dx = |${q[0]} - (${p[0]})| = ${dx}, dy = |${q[1]} - (${p[1]})| = ${dy}. L2 = sqrt(${dx}^2 + ${dy}^2) = ${l2}.`,
+            expKm: `តាមរូបមន្ត L2 = √(${dx}² + ${dy}²) = ${l2}។`
+          });
+        } else {
+          bank.push({
+            topic: "Vectors & Distance", type: "EX",
+            en: `[Vector Math #${idx + 1}] Compute the Manhattan Distance (L1) between point A=(${p[0]}, ${p[1]}) and point B=(${q[0]}, ${q[1]}).`,
+            km: `[លំហាត់វ៉ិចទ័រទី ${idx + 1}] ចូរគណនាចម្ងាយ Manhattan (L1) រវាងចំណុច A=(${p[0]}, ${p[1]}) និង B=(${q[0]}, ${q[1]})។`,
+            ans: String(l1),
+            expEn: `L1 = |${q[0]} - (${p[0]})| + |${q[1]} - (${p[1]})| = ${dx} + ${dy} = ${l1}.`,
+            expKm: `តាមរូបមន្តចម្ងាយ Manhattan L1 = ${dx} + ${dy} = ${l1}។`
+          });
+        }
+      });
+
+      // B. Generate 20 Dot Product Exercises (Topic 5)
+      for (let i = 1; i <= 20; i++) {
+        const a1 = i, a2 = i + 1, b1 = 2, b2 = 3;
+        const dot = a1 * b1 + a2 * b2;
+        bank.push({
+          topic: "Vectors & Distance", type: "EX",
+          en: `[Dot Product #${i}] Given vector u = [${a1}, ${a2}] and vector v = [${b1}, ${b2}], calculate the dot product (u · v).`,
+          km: `[ផលគុណស្កាលែទី ${i}] គេមានវ៉ិចទ័រ u = [${a1}, ${a2}] និង v = [${b1}, ${b2}]។ ចូរគណនាផលគុណស្កាលែ (u · v)។`,
+          ans: String(dot),
+          expEn: `u · v = (${a1} * ${b1}) + (${a2} * ${b2}) = ${a1 * b1} + ${a2 * b2} = ${dot}.`,
+          expKm: `u · v = (${a1} × ${b1}) + (${a2} × ${b2}) = ${dot}។`
+        });
+      }
+
+      // C. Generate 20 NumPy Reshape & Broadcasting Questions (Topic 3)
+      const shapes = [
+        [4, 6], [3, 8], [5, 7], [9, 4], [10, 12], [6, 6], [7, 8], [12, 5], [15, 4], [8, 9],
+        [11, 3], [14, 2], [16, 4], [20, 5], [25, 4], [3, 15], [7, 9], [6, 11], [9, 8], [13, 3]
+      ];
+      shapes.forEach((sh, i) => {
+        const total = sh[0] * sh[1];
+        bank.push({
+          topic: "NumPy & Preprocessing", type: "FILL",
+          en: `[NumPy Shape #${i + 1}] Given a 2D NumPy matrix of shape (${sh[0]}, ${sh[1]}), calling \`.reshape(-1)\` flattens it into a 1D vector of length ________.`,
+          km: `[លំហាត់ NumPy ទី ${i + 1}] គេមានម៉ាទ្រីស NumPy ទំហំ (${sh[0]}, ${sh[1]})។ ការហៅ \`.reshape(-1)\` នឹងបង្កើតវ៉ិចទ័រ 1D ដែលមានប្រវែង ________។`,
+          ans: String(total),
+          expEn: `Total elements = ${sh[0]} * ${sh[1]} = ${total}.`,
+          expKm: `ចំនួនធាតុសរុបគឺ ${sh[0]} × ${sh[1]} = ${total}។`
+        });
+      });
+
+      // D. Generate 20 Gradient Descent Step Exercises (Topic 8)
+      for (let i = 1; i <= 20; i++) {
+        const w0 = 10 + i;
+        const lr = 0.5;
+        const grad = 2 * (i % 5 + 1);
+        const w1 = w0 - lr * grad;
+        bank.push({
+          topic: "Gradient Descent & Generalization", type: "EX",
+          en: `[Gradient Step #${i}] Current weight w_0 = ${w0}, learning rate alpha = ${lr}, and loss gradient dL/dw = ${grad}. Calculate the updated weight w_1.`,
+          km: `[ជំហាន Gradient Descent ទី ${i}] ទម្ងន់បច្ចុប្បន្ន w_0 = ${w0}, Learning rate alpha = ${lr} និងដេរីវេកំហុស dL/dw = ${grad}។ ចូរគណនាទម្ងន់ថ្មី w_1។`,
+          ans: String(w1),
+          expEn: `w_1 = w_0 - alpha * grad = ${w0} - (${lr} * ${grad}) = ${w1}.`,
+          expKm: `w_1 = ${w0} - (${lr} × ${grad}) = ${w1}។`
+        });
+      }
+
+      // E. Generate 20 Confusion Matrix Precision / Recall / F1 Questions (Topic 7)
+      for (let i = 1; i <= 20; i++) {
+        const tp = i * 10;
+        const fp = i * 10; // makes precision = 0.5
+        const fn = i * 30; // makes recall = 0.25
+        if (i % 2 === 0) {
+          bank.push({
+            topic: "Classification & Evaluation", type: "EX",
+            en: `[Confusion Matrix #${i}] A binary classifier produces TP = ${tp}, FP = ${fp}, and FN = ${fn}. Calculate Precision as a decimal (e.g., 0.5).`,
+            km: `[រង្វាស់ Classification ទី ${i}] ម៉ូដែលមួយមាន TP = ${tp}, FP = ${fp}, និង FN = ${fn}។ ចូរគណនាតម្លៃ Precision ជាទសភាគ។`,
+            ans: "0.5",
+            expEn: `Precision = TP / (TP + FP) = ${tp} / (${tp} + ${fp}) = 0.5.`,
+            expKm: `Precision = TP / (TP + FP) = ${tp} / (${tp} + ${fp}) = 0.5។`
+          });
+        } else {
+          bank.push({
+            topic: "Classification & Evaluation", type: "EX",
+            en: `[Confusion Matrix #${i}] A binary classifier produces TP = ${tp}, FP = ${fp}, and FN = ${fn}. Calculate Recall as a decimal (e.g., 0.25).`,
+            km: `[រង្វាស់ Classification ទី ${i}] ម៉ូដែលមួយមាន TP = ${tp}, FP = ${fp}, និង FN = ${fn}។ ចូរគណនាតម្លៃ Recall ជាទសភាគ។`,
+            ans: "0.25",
+            expEn: `Recall = TP / (TP + FN) = ${tp} / (${tp} + ${fn}) = 0.25.`,
+            expKm: `Recall = TP / (TP + FN) = ${tp} / (${tp} + ${fn}) = 0.25។`
+          });
+        }
+      }
+
+      // F. Generate 20 Regression MSE & MAE Calculations (Topic 6)
+      for (let i = 1; i <= 20; i++) {
+        const yTrue = i + 5;
+        const yPred = i + 2; // error = 3
+        const mse = 9;
+        const mae = 3;
+        if (i % 2 === 0) {
+          bank.push({
+            topic: "Regression & Overfitting", type: "EX",
+            en: `[Regression Loss #${i}] For a single data point with true target y = ${yTrue} and prediction y_hat = ${yPred}, what is the Squared Error (y - y_hat)^2?`,
+            km: `[ការគណនា Loss ទី ${i}] សម្រាប់ទិន្នន័យដែលមានតម្លៃពិត y = ${yTrue} និងតម្លៃទស្សន៍ទាយ y_hat = ${yPred} តើកំហុសការ៉េ (y - y_hat)² ស្មើប៉ុន្មាន?`,
+            ans: String(mse),
+            expEn: `(${yTrue} - ${yPred})^2 = 3^2 = 9.`,
+            expKm: `(${yTrue} - ${yPred})² = 3² = 9។`
+          });
+        } else {
+          bank.push({
+            topic: "Regression & Overfitting", type: "EX",
+            en: `[Regression Loss #${i}] For a single data point with true target y = ${yTrue} and prediction y_hat = ${yPred}, what is the Absolute Error |y - y_hat|?`,
+            km: `[ការគណនា Loss ទី ${i}] សម្រាប់ទិន្នន័យដែលមានតម្លៃពិត y = ${yTrue} និងតម្លៃទស្សន៍ទាយ y_hat = ${yPred} តើកំហុសដាច់ខាត |y - y_hat| ស្មើប៉ុន្មាន?`,
+            ans: String(mae),
+            expEn: `|${yTrue} - ${yPred}| = 3.`,
+            expKm: `|${yTrue} - ${yPred}| = 3។`
+          });
+        }
+      }
+
+      // G. Generate 20 Train/Validation/Test Split & Cross-Validation Exercises (Topic 4)
+      for (let i = 1; i <= 20; i++) {
+        const totalRows = i * 1000;
+        const testPct = 20;
+        const testRows = totalRows * 0.2;
+        bank.push({
+          topic: "ML Workflow", type: "EX",
+          en: `[Data Split #${i}] You have a dataset of ${totalRows.toLocaleString()} rows and reserve ${testPct}% for the Test Set. How many rows are in the Test Set?`,
+          km: `[ការបែងចែកទិន្នន័យទី ${i}] អ្នកមានទិន្នន័យសរុបចំនួន ${totalRows.toLocaleString()} ជួរ ហើយទុក ${testPct}% សម្រាប់ Test Set។ តើក្នុង Test Set មានប៉ុន្មានជួរ?`,
+          ans: String(testRows),
+          expEn: `${totalRows} * 0.20 = ${testRows} rows.`,
+          expKm: `${totalRows} × 20% = ${testRows} ជួរ។`
+        });
+      }
+
+      // H. Generate 20 Asyncio & Concurrency Timing Questions & AI Scenarios (Topics 1 & 2)
+      for (let i = 1; i <= 21; i++) {
+        if (i % 2 === 0) {
+          const reqs = i + 5;
+          const ms = (i % 4 + 1) * 100;
+          bank.push({
+            topic: "Python & Concurrency", type: "MCQ",
+            en: `[Concurrency #${i}] You run ${reqs} non-blocking network calls concurrently with \`asyncio.gather()\`. Each call takes ${ms}ms. What is the approximate total time?`,
+            km: `[Concurrency ទី ${i}] អ្នកហៅ API ចំនួន ${reqs} ក្នុងពេលតែមួយដោយប្រើ \`asyncio.gather()\` ដែលសំណើនីមួយៗប្រើពេល ${ms}ms។ តើរយៈពេលសរុបប្រហែលប៉ុន្មាន?`,
+            options: [`~${ms}ms`, `${reqs * ms}ms`, `${reqs * 1000}ms`, `0ms`],
+            ans: `~${ms}ms`,
+            expEn: `Concurrent non-blocking I/O completes in roughly the duration of a single call (~${ms}ms).`,
+            expKm: `ការហៅព្រមគ្នាតាមរយៈ Asyncio ចំណាយពេលប្រហែលនឹងសំណើតែមួយប៉ុណ្ណោះ (~${ms}ms)។`
+          });
+        } else {
+          const isSupervised = i % 3 === 0;
+          bank.push({
+            topic: "AI Landscape", type: "TF",
+            en: `[AI Paradigm #${i}] Training a model on ${i * 500} labeled chest X-ray images (with 'Pneumonia' vs 'Healthy' ground-truth tags) is an example of Supervised Learning.`,
+            km: `[ទម្រង់នៃការរៀន AI ទី ${i}] ការបង្វឹកម៉ូដែលលើរូបភាព X-ray ចំនួន ${i * 500} ដែលមានស្លាកចម្លើយស្រាប់ ('មានជំងឺ' ឬ 'ធម្មតា') គឺជា Supervised Learning។`,
+            options: ["True", "False"],
+            ans: "True",
+            expEn: `Learning from labeled input-output pairs is the definition of Supervised Learning.`,
+            expKm: `ពិត! ការបង្វឹកម៉ូដែលដោយមានទិន្នន័យភ្ជាប់ជាមួយស្លាកចម្លើយត្រឹមត្រូវ (Labeled Data) គឺជា Supervised Learning។`
+          });
+        }
+      }
+
+      return bank.map((q, index) => ({ ...q, id: index + 1 }));
+    }
+
+    // ============================================================================
+    // 3. STATE MANAGEMENT & EXAM ENGINE
+    // ============================================================================
+    const masterBank = buildFullQuestionBank();
+    let activeQuestions = [];
+    let userAnswers = {};
+    let isSubmitted = false;
+    let currentLang = 'both'; // 'both' | 'en' | 'km'
+    let secondsElapsed = 0;
+    let timerInterval = null;
+
+    document.getElementById('poolCountBadge').textContent = masterBank.length;
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      secondsElapsed = 0;
+      updateTimerUI();
+      timerInterval = setInterval(() => {
+        if (!isSubmitted) {
+          secondsElapsed++;
+          updateTimerUI();
+        }
+      }, 1000);
+    }
+
+    function updateTimerUI() {
+      const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+      const secs = String(secondsElapsed % 60).padStart(2, '0');
+      document.getElementById('timerDisplay').textContent = `${mins}:${secs}`;
+    }
+
+    function startNewRandomExam() {
+      isSubmitted = false;
+      userAnswers = {};
+      document.getElementById('resultBanner').classList.add('hidden');
+      document.getElementById('submitBtn').classList.remove('hidden');
+      document.getElementById('topicFilter').value = 'ALL';
+      document.getElementById('typeFilter').value = 'ALL';
+
+      // Draw 50 random questions from the 208-question bank
+      activeQuestions = shuffleArray(masterBank).slice(0, 50).map((q, idx) => ({
+        ...q,
+        examNumber: idx + 1
+      }));
+
+      startTimer();
+      renderMatrix();
+      renderQuestions();
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function browseAllBank() {
+      isSubmitted = false;
+      userAnswers = {};
+      document.getElementById('resultBanner').classList.add('hidden');
+      activeQuestions = masterBank.map((q, idx) => ({
+        ...q,
+        examNumber: idx + 1
+      }));
+      renderMatrix();
+      renderQuestions();
+      updateProgress();
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      ['both', 'en', 'km'].forEach(l => {
+        const btn = document.getElementById(`lang-${l}`);
+        if (l === lang) {
+          btn.className = "px-2.5 py-1.5 rounded-md bg-white text-indigo-600 shadow-sm transition font-semibold";
+        } else {
+          btn.className = "px-2.5 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition";
+        }
+      });
+      renderQuestions();
+    }
+
+    function recordAnswer(examNum, val) {
+      if (isSubmitted) return;
+      if (val && String(val).trim() !== '') {
+        userAnswers[examNum] = String(val).trim();
+      } else {
+        delete userAnswers[examNum];
+      }
+      updateProgress();
+      renderMatrix();
+    }
+
+    function updateProgress() {
+      const total = activeQuestions.length;
+      const count = Object.keys(userAnswers).length;
+      const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+      document.getElementById('progressText').textContent = `${count} / ${total} Answered`;
+      document.getElementById('progressBar').style.width = `${pct}%`;
+    }
+
+    function renderMatrix() {
+      const container = document.getElementById('questionMatrix');
+      container.innerHTML = activeQuestions.map(q => {
+        const answered = userAnswers[q.examNumber] !== undefined;
+        let colorClass = answered
+          ? 'bg-indigo-600 text-white border-indigo-600'
+          : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-indigo-400';
+
+        if (isSubmitted) {
+          const correct = evaluateAnswer(q, userAnswers[q.examNumber]);
+          colorClass = correct
+            ? 'bg-emerald-600 text-white border-emerald-600'
+            : 'bg-rose-600 text-white border-rose-600';
+        }
+
+        return `
+          <button onclick="jumpToQuestion(${q.examNumber})"
+            class="h-7 rounded text-xs font-semibold border transition flex items-center justify-center ${colorClass}">
+            ${q.examNumber}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function jumpToQuestion(num) {
+      const el = document.getElementById(`q-card-${num}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function evaluateAnswer(q, userVal) {
+      if (!userVal) return false;
+      const cleanUser = userVal.toLowerCase().trim();
+      const cleanAns = q.ans.toLowerCase().trim();
+
+      if (q.type === 'TF' || q.type === 'MCQ') {
+        return cleanUser === cleanAns;
+      }
+      if (q.type === 'FILL' || q.type === 'EX') {
+        // Check numeric equivalence if both parse as numbers
+        const numU = parseFloat(cleanUser);
+        const numA = parseFloat(cleanAns);
+        if (!isNaN(numU) && !isNaN(numA) && cleanAns.indexOf('(') === -1) {
+          return Math.abs(numU - numA) < 0.05;
+        }
+        return cleanUser.replace(/\s+/g, '') === cleanAns.replace(/\s+/g, '') || cleanAns.includes(cleanUser);
+      }
+      if (q.type === 'QA') {
+        if (cleanUser.length < 8) return false;
+        if (!q.keywords) return true;
+        const matched = q.keywords.filter(kw => cleanUser.includes(kw.toLowerCase()));
+        return matched.length >= 1;
+      }
+      return false;
+    }
+
+    function getTypeBadge(type) {
+      const map = {
+        TF: { label: "True / False • ពិត ឬ មិនពិត", cls: "bg-amber-50 text-amber-700 border-amber-200" },
+        MCQ: { label: "Multiple Choice • ជ្រើសរើសចម្លើយ", cls: "bg-blue-50 text-blue-700 border-blue-200" },
+        FILL: { label: "Fill in Blank • បំពេញចន្លោះ", cls: "bg-purple-50 text-purple-700 border-purple-200" },
+        EX: { label: "Exercise • លំហាត់គណនា", cls: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+        QA: { label: "Q&A • សំណួរទ្រឹស្ដី", cls: "bg-rose-50 text-rose-700 border-rose-200" }
+      };
+      return map[type] || { label: type, cls: "bg-slate-100 text-slate-700" };
+    }
+
+    function renderQuestions() {
+      const topicFilter = document.getElementById('topicFilter').value;
+      const typeFilter = document.getElementById('typeFilter').value;
+      const container = document.getElementById('questionsContainer');
+
+      const filtered = activeQuestions.filter(q => {
+        const matchTopic = topicFilter === 'ALL' || q.topic === topicFilter;
+        const matchType = typeFilter === 'ALL' || q.type === typeFilter;
+        return matchTopic && matchType;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500">
+            No questions match this filter in the current set. Reset filter to view all questions.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(q => {
+        const badge = getTypeBadge(q.type);
+        const savedAns = userAnswers[q.examNumber] || '';
+        const isCorrect = isSubmitted ? evaluateAnswer(q, savedAns) : null;
+
+        let borderClass = "border-slate-200";
+        if (isSubmitted) {
+          borderClass = isCorrect ? "border-emerald-500 bg-emerald-50/10" : "border-rose-400 bg-rose-50/10";
+        }
+
+        // Question Text according to language mode
+        let promptHTML = '';
+        if (currentLang === 'both') {
+          promptHTML = `
+            <p class="text-slate-900 font-semibold text-base leading-relaxed">${q.en}</p>
+            <p class="text-slate-600 khmer-text text-sm mt-1.5 bg-slate-50 p-2.5 rounded-lg border border-slate-100">${q.km}</p>
+          `;
+        } else if (currentLang === 'en') {
+          promptHTML = `<p class="text-slate-900 font-semibold text-base leading-relaxed">${q.en}</p>`;
+        } else {
+          promptHTML = `<p class="text-slate-900 font-semibold text-base khmer-text leading-relaxed">${q.km}</p>`;
+        }
+
+        // Input Controls
+        let inputHTML = '';
+        if (q.type === 'TF' || q.type === 'MCQ') {
+          inputHTML = `
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3">
+              ${q.options.map(opt => {
+                const checked = savedAns === opt;
+                const escapedOpt = opt.replace(/'/g, "\\'");
+                return `
+                  <label class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition ${
+                    checked ? 'border-indigo-600 bg-indigo-50/60 font-medium text-indigo-950' : 'border-slate-200 hover:bg-slate-50'
+                  }">
+                    <input type="radio" name="q-${q.examNumber}" value="${opt}"
+                      ${checked ? 'checked' : ''}
+                      ${isSubmitted ? 'disabled' : ''}
+                      onchange="recordAnswer(${q.examNumber}, '${escapedOpt}'); renderQuestions();"
+                      class="w-4 h-4 text-indigo-600 focus:ring-indigo-500" />
+                    <span class="text-sm">${opt}</span>
+                  </label>
+                `;
+              }).join('')}
+            </div>
+          `;
+        } else if (q.type === 'FILL' || q.type === 'EX') {
+          inputHTML = `
+            <div class="mt-3">
+              <input type="text"
+                placeholder="Type your answer / បញ្ចូលចម្លើយរបស់អ្នក..."
+                value="${savedAns.replace(/"/g, '&quot;')}"
+                ${isSubmitted ? 'disabled' : ''}
+                oninput="recordAnswer(${q.examNumber}, this.value)"
+                class="w-full sm:w-96 px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 khmer-text" />
+            </div>
+          `;
+        } else if (q.type === 'QA') {
+          inputHTML = `
+            <div class="mt-3">
+              <textarea rows="3"
+                placeholder="Write your explanation in English or Khmer / សរសេរការពន្យល់របស់អ្នកជាភាសាអង់គ្លេស ឬខ្មែរ..."
+                ${isSubmitted ? 'disabled' : ''}
+                oninput="recordAnswer(${q.examNumber}, this.value)"
+                class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 khmer-text">${savedAns}</textarea>
+            </div>
+          `;
+        }
+
+        // Solution & Explanation Box (Shown after submit)
+        let explanationHTML = '';
+        if (isSubmitted) {
+          explanationHTML = `
+            <div class="mt-4 p-4 rounded-xl border ${isCorrect ? 'bg-emerald-50 border-emerald-200' : 'bg-rose-50 border-rose-200'} text-xs sm:text-sm space-y-1.5">
+              <div class="font-bold ${isCorrect ? 'text-emerald-800' : 'text-rose-800'}">
+                ${isCorrect ? '✓ Correct / ត្រឹមត្រូវ!' : '✗ Needs Review / ចម្លើយមិនទាន់ត្រឹមត្រូវ'}
+                — Official Answer: <span class="underline">${q.ans}</span>
+              </div>
+              <p class="text-slate-700">${q.expEn}</p>
+              <p class="text-slate-700 khmer-text">${q.expKm}</p>
+            </div>
+          `;
+        }
+
+        return `
+          <article id="q-card-${q.examNumber}" class="bg-white rounded-2xl border-2 ${borderClass} p-5 shadow-sm transition">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white font-bold text-xs">
+                  Q${q.examNumber}
+                </span>
+                <span class="px-2.5 py-1 rounded-lg text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">
+                  ${q.topic}
+                </span>
+                <span class="px-2.5 py-1 rounded-lg text-xs font-medium border ${badge.cls} khmer-text">
+                  ${badge.label}
+                </span>
+              </div>
+              <span class="text-[11px] text-slate-400 font-mono">Bank ID #${q.id}</span>
+            </div>
+
+            ${promptHTML}
+            ${inputHTML}
+            ${explanationHTML}
+          </article>
+        `;
+      }).join('');
+    }
+
+    function submitExam() {
+      isSubmitted = true;
+      clearInterval(timerInterval);
+
+      let correctCount = 0;
+      const topicStats = {};
+
+      activeQuestions.forEach(q => {
+        if (!topicStats[q.topic]) {
+          topicStats[q.topic] = { total: 0, correct: 0 };
+        }
+        topicStats[q.topic].total++;
+        if (evaluateAnswer(q, userAnswers[q.examNumber])) {
+          correctCount++;
+          topicStats[q.topic].correct++;
+        }
+      });
+
+      const total = activeQuestions.length;
+      const pct = Math.round((correctCount / total) * 100);
+
+      document.getElementById('scoreHeadline').textContent = `Score: ${correctCount} / ${total} (${pct}%)`;
+      document.getElementById('scoreSubtext').textContent =
+        pct >= 80
+          ? "អបអរសាទរ! អ្នកត្រៀមខ្លួនបានល្អណាស់សម្រាប់ការប្រឡងខែទី ១ (Excellent Readiness!)"
+          : "សូមពិនិត្យមើលចម្លើយ និងការពន្យល់ខាងក្រោមដើម្បីពង្រឹងបន្ថែម (Review explanations below to improve!)";
+      document.getElementById('finalTimeTaken').textContent = document.getElementById('timerDisplay').textContent;
+
+      // Render Topic Breakdown
+      const breakdownEl = document.getElementById('topicBreakdownGrid');
+      breakdownEl.innerHTML = Object.entries(topicStats).map(([topic, st]) => {
+        const tPct = Math.round((st.correct / st.total) * 100);
+        return `
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3">
+            <div class="text-xs font-semibold text-slate-700 truncate">${topic}</div>
+            <div class="flex items-baseline justify-between mt-1">
+              <span class="text-base font-bold text-indigo-600">${st.correct}/${st.total}</span>
+              <span class="text-xs text-slate-500">${tPct}%</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('resultBanner').classList.remove('hidden');
+      renderMatrix();
+      renderQuestions();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialize first 50-question random exam on load
+    startNewRandomExam();
+  </script>
+</body>
+</html>
