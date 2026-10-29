@@ -1,0 +1,76 @@
+# Datasets & Data Formats
+datasets/
+data/
+*.csv
+*.tsv
+*.jsonl
+*.npy
+*.npz
+*.parquet
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Images, Videos, Audio
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.svg
+*.ico
+*.bmp
+*.tiff
+*.mp4
+*.mkv
+*.avi
+*.mov
+*.webm
+*.mp3
+*.wav
+*.ogg
+*.flac
+*.m4a
+
+# Model Files
+models/
+checkpoints/
+*.pt
+*.pth
+*.onnx
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.joblib
+*.safetensors
+*.bin
+*.gguf
+*.tflite
+
+# Environment, Credentials, Tokens & Keycloak Secrets
+.env
+.env.*
+.env.example
+*credentials*
+*secret*
+*token*
+*keycloak*
+*.pem
+*.key
+*.crt
+*.p12
+
+# IDE / Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Documentation Files
+*.md
